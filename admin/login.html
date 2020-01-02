@@ -38,6 +38,86 @@
     </div>
   </div>
 
+  <!-- 模态框 start -->
+  <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">友情提示</h4>
+        </div>
+        <div class="modal-body">
+          <p>One fine body&hellip;</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal">确认</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+  <!-- 模态框 end -->
+
+  <script>
+    // 入口函数
+    $(function () {
+      /*
+      思路：
+        1.登录按钮事件，细节：表单按钮需要阻止默认跳转
+          1.1获取输入框内容
+          1.2非空判断
+          1.3Ajax发送请求
+          1.4响应成功，跳转页面
+        */
+      // 1.登录按钮事件，细节：表单按钮需要阻止默认跳转
+      $('.input_sub').on('click', function (e) {
+        // a 细节：表单按钮需要阻止默认跳转
+        e.preventDefault();
+        //1.1获取输入框内容
+        let username = $('.input_txt').val().trim();
+        let password = $('.input_pass').val().trim();
+        //1.2非空判断e
+        if (username.length == 0 || password.length == 0) {
+          // a . 修改模态框提示的内容
+          // 注意点: 调用之前给模态框一个 id
+          $('.modal-body>p').text('请输入用户名和密码');
+           // b . 弹出模态框
+          $('#myModal').modal();
+          return;
+        }
+        //1.3Ajax发送请求
+        $.ajax({
+          url: 'http://localhost:8080/api/v1/admin/user/login',
+          type: 'post',
+          dataType: 'json',
+          data: {
+            username: username,
+            password: password
+          },
+          success: function (backData) {
+            console.log(backData);
+            if (backData.code == 200) {
+              // a . 修改模态框提示的内容
+              $('.modal-body>p').text(backData.msg);
+              // b . 弹出模态框
+              // 注意点: 调用之前给模态框一个 id
+              $('#myModal').modal();
+              // c . 给模态框的确认按钮添加点击事件,模态框被隐藏之后被触发
+              $('#myModal').on('hidden.bs.modal', function (e) {
+                // d . 确认后跳转页面
+                window.location.href = './index.html';
+              })
+            } else {
+              // a . 修改模态框提示的内容
+              $('.modal-body>p').text(backData.msg);
+              // b . 弹出模态框
+              $('#myModal').modal();
+            }
+          }
+        });
+      })
+    })
+  </script>
 </body>
 
 </html>
