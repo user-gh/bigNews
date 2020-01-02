@@ -87,7 +87,12 @@
             //};
             
             /* 2 . 退出登录*/
-          
+            $('.logout').on('click',function(){
+                // 清除本地数据 
+                localStorage.removeItem('token');
+                //  跳转登录页面
+                window.location.href = './login.html';
+            })
             
              /* 4.侧边栏点击事件 */
         })
