@@ -72,6 +72,36 @@
             </div>
         </div>
     </div>
+    <!-- 分类列表模板 -->
+    <script id='cat_list' type="text/html">
+        <option value=''>所有分类</option>
+        {{each data v}}
+        <option vaalue='{{v.id}}'>{{v.name}}</option>
+        {{/each}}
+    </script>
+    <script src="./libs/http.js"></script>
+    <script>
+        // 入口函数
+        $(function () {
+            /* 0.加载所有文章分类
+            注意点： 用户需要看到分类的名称，但是服务器需要分类的id
+            问题 ： 如何做到，用户显示的是分类的名称，但是代码 val()获取的是id
+            */
+            // 1.页面加载,渲染文章列表页面
+            $.ajax({
+                url: BigNew.category_list,
+                type: 'get',
+                dataType: 'json',
+                success: function (backData) {
+                    console.log(backData);
+                    // 渲染页面
+                    $('#selCategory').html(template('cat_list',backData));
+                }
+            });
+
+          
+        })
+    </script>
 </body>
 
 </html>
