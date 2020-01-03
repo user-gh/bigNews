@@ -72,6 +72,22 @@
             </div>
         </div>
     </div>
+    <!-- 文章列表模板 -->
+    <script id='art_list' type="text/html">
+        {{each data.data v}}
+        <tr>
+            <td>{{v.title}}</td>
+            <td>{{v.author}}</td>
+            <td>{{v.category}}</td>
+            <td class="text-center">{{v.date}}</td>
+            <td class="text-center">{{v.state}}</td>
+            <td class="text-center">
+                <a href="article_edit.html?id={v.id}}" class="btn btn-default btn-xs">编辑</a>
+                <a href="javascript:void(0);" data-id="{{v.id}}" class="btn btn-danger btn-xs delete">删除</a>
+            </td>
+        </tr>
+        {{/each}}
+    </script>
     <!-- 分类列表模板 -->
     <script id='cat_list' type="text/html">
         <option value=''>所有分类</option>
@@ -95,11 +111,34 @@
                 success: function (backData) {
                     console.log(backData);
                     // 渲染页面
-                    $('#selCategory').html(template('cat_list',backData));
+                    $('#selCategory').html(template('cat_list', backData));
                 }
             });
 
-          
+            // 筛选点击按钮事件
+            $('#btnSearch').click(function (e) {
+                // 阻止表单默认跳转
+                e.preventDefault();
+                // Ajax请求文章列表
+                $.ajax({
+                    url: BigNew.article_query,
+                    type: 'get',
+                    dataType: 'json',
+                    data: {
+                        type: $('#selCategory').val(),//文章类型id
+                        state: $('#selStatus').val(),//文章状态
+                        page: 1,//当前页
+                        perpage: 10,//每页显示的条数
+                    },
+                    success: function (backData) {
+                        console.log(backData);
+                        // 渲染页面
+                        $('.table>tbody').html(template('art_list', backData));
+                    }
+                });
+            })
+            /* .页面一加载：请求所有文章列表 : 主动触发筛选按钮点击事件 */
+            $('#btnSearch').click();
         })
     </script>
 </body>
