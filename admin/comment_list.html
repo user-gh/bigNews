@@ -170,11 +170,11 @@
       <td>{{v.state}}</td>
       <td class="text-center">
         {{ if v.state == '待审核'}}
-        <a href="javascript:void(0);;" data-id = '{{v.id}}' class="btn btn-warning btn-xs">批准</a>
+        <a href="javascript:void(0);;" data-id = '{{v.id}}' class="btn btn-warning btn-xs btn-pass">批准</a>
         {{else if v.state == '已批准'}}
         <a href="javascript:void(0);;" data-id = '{{v.id}}' class="btn btn-warning btn-xs">拒绝</a>
         {{/if}}
-        <a href="javascript:void(0);;" data-id = '{{v.id}}' class="btn btn-danger btn-xs">删除</a>
+        <a href="javascript:void(0);;" data-id = '{{v.id}}' class="btn btn-danger btn-xs btn-del">删除</a>
       </td>
     </tr> 
     {{/each}}
@@ -204,10 +204,54 @@
       // 2. 分页插件的加载
 
       // 3.审批
-
+      $('table > tbody').on('click', '.btn-pass', function () {
+        alert(11);
+        // a 获取当前点击的id
+        let id = $(this).attr('data-id');
+        console.log(id);
+        // b 发送ajax请求
+        $.ajax({
+          url: BigNew.comment_pass,
+          type: 'post',
+          dataType: 'json',
+          data: {
+            id: id
+          },
+          success: function (backData) {
+            console.log(backData);
+            if (backData.code == 200) {
+              alert('审核成功');
+              // 刷新页面
+              window.location.reload();
+            }
+          }
+        });
+      })
       // 4.拒绝
 
       // 5. 删除
+      $('table>tbody').on('click', '.btn-del', function () {
+        // a 获取当前点击的id
+        let id = $(this).attr('data-id');
+        console.log(id);
+        // b 发送ajax请求
+        $.ajax({
+          url: BigNew.comment_delete,
+          type: 'post',
+          dataType: 'json',
+          data: {
+            id: id
+          },
+          success: function (backData) {
+            console.log(backData);
+            if(backData.code == 200){
+              alert('删除成功');
+              // 刷新页面
+              window.location.reload();
+            }
+          }
+        });
+      })
     })  
   </script>
 </body>
