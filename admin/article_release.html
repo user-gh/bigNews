@@ -109,9 +109,6 @@
             var editor = new E('#editor')
             // 或者 var editor = new E( document.getElementById('editor') )
             editor.create()
-            // 1.huoq从artcle_list.html页面传递过来的参数id
-            let id = window.location.href.split('=')[1];
-            console.log(id);
 
             // 1.ajax 请求所有分类
             $.ajax({
@@ -163,12 +160,12 @@
                    第一种 ： 使用隐藏文本域 (少) 
                    第二种 ： 使用append() 手动追加 
                */
-                fd.append('id', id);
+
                 fd.append('date', $('#testico').val());
                 fd.append('content', editor.txt.html());
                 fd.append('state', state);
                 $.ajax({
-                    url: BigNew.article_edit,
+                    url: BigNew.article_publish,
                     type: 'post',
                     dataType: 'json',
                     data: fd,
@@ -181,7 +178,6 @@
                             // 刷新页面
                             window.location.href = './article_list.html';
                         }
-
                     }
                 });
             }

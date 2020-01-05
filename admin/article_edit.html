@@ -109,7 +109,7 @@
             var editor = new E('#editor')
             // 或者 var editor = new E( document.getElementById('editor') )
             editor.create()
-            // 1.huoq从artcle_list.html页面传递过来的参数id
+            // 1.获取从artcle_list.html页面传递过来的参数id
             let id = window.location.href.split('=')[1];
             console.log(id);
 
@@ -197,7 +197,6 @@
                             // 刷新页面
                             window.location.href = './article_list.html';
                         }
-                        
                     }
                 });
             }

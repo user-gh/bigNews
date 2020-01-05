@@ -160,6 +160,56 @@
 
     </div>
   </div>
+  <script id="com_list" type="text/html">
+    {{each data.data v}}
+    <tr>
+      <td>{{v.author}}</td>
+      <td>{{v.content}}</td>
+      <td>{{v.title}}</td>
+      <td>{{v.date}} {{v.time}}</td>
+      <td>{{v.state}}</td>
+      <td class="text-center">
+        {{ if v.state == '待审核'}}
+        <a href="javascript:void(0);;" data-id = '{{v.id}}' class="btn btn-warning btn-xs">批准</a>
+        {{else if v.state == '已批准'}}
+        <a href="javascript:void(0);;" data-id = '{{v.id}}' class="btn btn-warning btn-xs">拒绝</a>
+        {{/if}}
+        <a href="javascript:void(0);;" data-id = '{{v.id}}' class="btn btn-danger btn-xs">删除</a>
+      </td>
+    </tr> 
+    {{/each}}
+  </script>
+  <script src="./libs/http.js"></script>
+  <script>
+    // 入口函数
+    $(function () {
+      // 1.页面一加载请求所有评论列表
+      getCommentList(1);
+      function getCommentList(currentPage) {
+        $.ajax({
+          url: BigNew.comment_list,
+          type: 'get',
+          dataType: 'json',
+          data: {
+            page: currentPage,
+            perpage: 10
+          },
+          success: function (backData) {
+            console.log(backData);
+            // 模板引擎渲染页面
+            $('.table>tbody').html(template('com_list', backData));
+          }
+        });
+      };
+      // 2. 分页插件的加载
+
+      // 3.审批
+
+      // 4.拒绝
+
+      // 5. 删除
+    })  
+  </script>
 </body>
 
 </html>
