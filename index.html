@@ -233,6 +233,19 @@
             <li><a href="./list.html">{{v.name}}</a></li>
         {{/each}}
     </script>
+    <!-- 模板引擎渲染首页焦点图 -->
+    <script id="focus_list" type="text/html">
+        {{each data v}}
+        {{if $index == 0}}
+        <li class = 'first'>
+            {{else }}
+            <li>
+                {{/if}}
+                <a href="./article.html?id={{v.id}}"><img src="{{v.cover}}" alt=""></a>
+                <p>{{v.title}}</p>
+            </li>
+        {{/each}}
+    </script>
     <script>
         // 入口函数
         $(function(){
@@ -245,6 +258,17 @@
                     console.log(backData);
                     // a 模板引擎渲染全部分类列表
                     $('.level_two').html(template('cat_list',backData));
+                }
+            });
+            // 2.首页焦点图
+            $.ajax({
+                url:'http://localhost:8080/api/v1/index/hotpic',
+                type:'get',
+                dataType:'json',
+                success: function(backData){
+                    console.log(backData);
+                    // a 模板引擎渲染首页焦点图
+                    $('.focus_list').html(template('focus_list',backData));
                 }
             });
         })
