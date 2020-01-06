@@ -39,12 +39,12 @@
                 </ul>
             </div>
             <ul class="left_menu fl">
-                <li><a href="#">最 新</a></li>
-                <li><a href="#">科 技</a></li>
-                <li><a href="#">股 市</a></li>
-                <li><a href="#">商 品</a></li>
-                <li><a href="#">外 汇</a></li>
-                <li><a href="#">公 司</a></li>
+                <li><a href="./list.html">最 新</a></li>
+                <li><a href="./list.html">科 技</a></li>
+                <li><a href="./list.html">股 市</a></li>
+                <li><a href="./list.html">商 品</a></li>
+                <li><a href="./list.html">外 汇</a></li>
+                <li><a href="./list.html">公 司</a></li>
             </ul>
             <ul class="right_menu fr">
                 <li><a href="#">科技专题</a></li>
@@ -267,22 +267,22 @@
                 {{if $index == 0}}
                     <li>
                         <span class = 'first'>{{$index +1}}</span>
-                        <a href="#">{{v.title}}</a>
+                        <a href="./article.html?id={{v.id}}">{{v.title}}</a>
                     </li>
                 {{else if $index == 1}}
                     <li>
                         <span class = 'second'>{{$index +1}}</span >
-                        <a href="#">{{v.title}}</a>
+                        <a href="./article.html?id={{v.id}}">{{v.title}}</a>
                     </li>
                 {{else if $index == 2}}
                     <li>
                         <span class = 'third'>{{$index +1}}</span>
-                        <a href="#">{{v.title}}</a>
+                        <a href="./article.html?id={{v.id}}">{{v.title}}</a>
                     </li>
                 {{else}}
                     <li>
                         <span>{{$index +1}}</span>
-                        <a href="#">{{v.title}}</a>
+                        <a href="./article.html?id={{v.id}}">{{v.title}}</a>
                     </li>
                 {{/if}}
             {{/each}}
