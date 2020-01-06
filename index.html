@@ -245,30 +245,93 @@
                 <p>{{v.title}}</p>
             </li>
         {{/each}}
+        </script>
+    <!-- 模板引擎渲染最新资料模块 -->
+    <script id="com_list" type="text/html">
+        {{each data v}}
+            <div class="common_news_list">
+                <a href="./article.html?id={{v.id}}" class="list_pic"><img src="{{v.cover}}" alt=""></a>
+                <h4><a href="#">{{v.title}}</a></h4>
+                <p>{{@ v.intro}}</p>
+                <div class="new_info">
+                    <span>标签：{{v.category}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<i class="fa fa-eye"></i>&nbsp;阅读({{v.read}}
+                        )&nbsp;&nbsp;&nbsp;<i class="fa fa-commenting"></i>&nbsp;评论( {{v.comments}} )</span>
+                    <b>发布于{{v.date}}</b>
+                </div>
+            </div>
+        {{/each}}
+    </script>
+    <!-- 模板引擎渲染热门排行 -->
+    <script id="con_list" type="text/html">
+            {{each data v}}
+                {{if $index == 0}}
+                    <li>
+                        <span class = 'first'>{{$index +1}}</span>
+                        <a href="#">{{v.title}}</a>
+                    </li>
+                {{else if $index == 1}}
+                    <li>
+                        <span class = 'second'>{{$index +1}}</span >
+                        <a href="#">{{v.title}}</a>
+                    </li>
+                {{else if $index == 2}}
+                    <li>
+                        <span class = 'third'>{{$index +1}}</span>
+                        <a href="#">{{v.title}}</a>
+                    </li>
+                {{else}}
+                    <li>
+                        <span>{{$index +1}}</span>
+                        <a href="#">{{v.title}}</a>
+                    </li>
+                {{/if}}
+            {{/each}}
     </script>
     <script>
         // 入口函数
-        $(function(){
+        $(function () {
             // 1.分类列表渲染
             $.ajax({
-                url:'http://localhost:8080/api/v1/index/category',
-                type:'get',
-                dataType:'json',
-                success: function(backData){
+                url: 'http://localhost:8080/api/v1/index/category',
+                type: 'get',
+                dataType: 'json',
+                success: function (backData) {
                     console.log(backData);
-                    // a 模板引擎渲染全部分类列表
-                    $('.level_two').html(template('cat_list',backData));
+                    // a 模板引擎渲染最新资料模块
+                    $('.level_two').html(template('cat_list', backData));
                 }
             });
             // 2.首页焦点图
             $.ajax({
-                url:'http://localhost:8080/api/v1/index/hotpic',
-                type:'get',
-                dataType:'json',
-                success: function(backData){
+                url: 'http://localhost:8080/api/v1/index/hotpic',
+                type: 'get',
+                dataType: 'json',
+                success: function (backData) {
                     console.log(backData);
-                    // a 模板引擎渲染首页焦点图
-                    $('.focus_list').html(template('focus_list',backData));
+                    // a 模板引擎渲染最新资料模块
+                    $('.focus_list').html(template('focus_list', backData));
+                }
+            });
+            // 3.最新资讯
+            $.ajax({
+                url: 'http://localhost:8080/api/v1/index/latest',
+                type: 'get',
+                dataType: 'json',
+                success: function (backData) {
+                    console.log(backData);
+                    // a 模板引擎渲染最新资料模块
+                    $('.common_news').html(template('com_list', backData));
+                }
+            });
+            /* 4.最新排行(调用) */
+            $.ajax({
+                url: 'http://localhost:8080/api/v1/index/rank',
+                type: 'get',
+                dataType: 'json',
+                success: function (backData) {
+                    console.log(backData);
+                    // a 模板引擎渲染最新资料模块
+                    $('.hotrank_list').html(template('con_list', backData));
                 }
             });
         })
