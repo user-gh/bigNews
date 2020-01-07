@@ -227,6 +227,49 @@
     </div>
     <!-- 导包template -->
     <script src="./js/template-web.js"></script>
+    <!-- 搜索新闻列表页面模板 -->
+    <script id="news" type="text/html">
+        {{each data.data v}}
+        <div class="common_news_list">
+            <a href="#" class="list_pic"><img src="{{v.cover}}" alt=""></a>
+            <h4><a href="#">{{v.title}}</a></h4>
+            <p>{{@ v.content}}</p>
+            <div class="new_info">
+                <span>标签：{{v.category}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<i class="fa fa-eye"></i>&nbsp;阅读( {{v.read}}
+                    )&nbsp;&nbsp;&nbsp;<i class="fa fa-commenting"></i>&nbsp;评论( {{v.comments}} )</span>
+                <b>发布于{{v.date}}</b>
+            </div>
+        </div>
+        {{/each}}
+    </script>
+    <script>
+        // 入口函数
+        $(function(){
+            // 1.注册搜索点击事件
+            $('.search_btn').on('click',function(e){
+                // a 阻止表单默认跳转行为
+                e.preventDefault();
+                // b 获取搜索框文本
+                var text = $('.search_txt').val();
+                // c ajax发送请求
+                $.ajax({
+                    url:'http://localhost:8080/api/v1/index/search',
+                    type:'get',
+                    dataType:'json',
+                    data:{
+                        page:1,//当前页
+                        perpage:10,// 每页显示的条数
+                        key:text // 搜索关键词
+                    },
+                    success: function(backData){
+                        console.log(backData);
+                        // 模板引擎渲染页面
+                        $('.setfr').html(template('news',backData));
+                    }
+                });
+            })
+        })
+    </script>
 </body>
 
 </html>
